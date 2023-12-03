@@ -34,6 +34,12 @@ public class CustomerController
 		return new CustomerDTO(customer.getId(), customer.getName());
 	}
 
+	@DeleteMapping("{id}")
+	public void deleteCustomer(@PathVariable(name = "id") int id)
+	{
+		customerService.deleteCustomer(id);
+	}
+
 	@PostMapping
 	public void addCustomer(@RequestBody CustomerDTO customerDTO)
 	{

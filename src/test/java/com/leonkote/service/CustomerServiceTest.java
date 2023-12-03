@@ -2,6 +2,7 @@ package com.leonkote.service;
 
 import com.leonkote.OperationHistoryApiApplicationTest;
 import com.leonkote.domain.Customer;
+import com.leonkote.domain.Operation;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -65,5 +66,21 @@ public class CustomerServiceTest extends OperationHistoryApiApplicationTest
 		customerService.addCustomer("omgnewuser");
 
 		assertEquals(count + 2, customerService.getCustomers().size());
+	}
+
+	@Test
+	public void deleteCustomerTest()
+	{
+		int count = customerService.getCustomers().size();
+
+		assertEquals(count, customerService.getCustomers().size());
+
+		customerService.deleteCustomer(0);
+
+		assertEquals(count - 1, customerService.getCustomers().size());
+
+		customerService.deleteCustomer(1);
+
+		assertEquals(count - 2, customerService.getCustomers().size());
 	}
 }

@@ -6,29 +6,36 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
-@AllArgsConstructor
 public class CustomerService
 {
-	private final List<Customer> storage = new ArrayList<>();
+	private final Map<Integer, Customer> storage = new HashMap<>();
+	private int nextId;
 
 	public void addCustomer(String name)
 	{
-		int id = storage.size();
-		Customer customer = new Customer(id, name);
-		storage.add(customer);
+		Customer customer = new Customer(nextId, name);
+		storage.put(nextId, customer);
+		nextId++;
 	}
 
 	public List<Customer> getCustomers()
 	{
-		return storage;
+		return new ArrayList<>(storage.values());
 	}
 
 	public Customer getCustomer(int id)
 	{
 		return storage.get(id);
+	}
+
+	public void deleteCustomer(int id)
+	{
+		storage.remove(id);
 	}
 
 	@PostConstruct

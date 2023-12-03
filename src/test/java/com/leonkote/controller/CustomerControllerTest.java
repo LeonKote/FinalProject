@@ -65,4 +65,20 @@ public class CustomerControllerTest extends OperationHistoryApiApplicationTest
 
 		assertEquals(count + 2, customerController.getCustomers().getClients().size());
 	}
+
+	@Test
+	public void deleteCustomerTest()
+	{
+		int count = customerController.getCustomers().getClients().size();
+
+		assertEquals(count, customerController.getCustomers().getClients().size());
+
+		customerController.deleteCustomer(0);
+
+		assertEquals(count - 1, customerController.getCustomers().getClients().size());
+
+		customerController.deleteCustomer(1);
+
+		assertEquals(count - 2, customerController.getCustomers().getClients().size());
+	}
 }

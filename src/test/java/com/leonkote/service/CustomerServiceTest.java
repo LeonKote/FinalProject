@@ -2,7 +2,6 @@ package com.leonkote.service;
 
 import com.leonkote.OperationHistoryApiApplicationTest;
 import com.leonkote.domain.Customer;
-import com.leonkote.domain.Operation;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

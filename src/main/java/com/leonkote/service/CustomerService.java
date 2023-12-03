@@ -1,7 +1,6 @@
 package com.leonkote.service;
 
 import com.leonkote.domain.Customer;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;

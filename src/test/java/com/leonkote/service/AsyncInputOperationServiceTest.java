@@ -15,16 +15,16 @@ public class AsyncInputOperationServiceTest extends OperationHistoryApiApplicati
 	@Test
 	public void addOperationTest()
 	{
-		// Private field, how to test?
-		//
-		// assertEquals(0, operationService.operations.size());
-		//
+		operationService.init();
+
+		assertEquals(0, operationService.getQueue().size());
+
 		operationService.addOperation(new Operation(-1, 0, 500, "USD", "LETHAL"));
-		//
-		// assertEquals(1, operationService.operations.size());
-		//
+
+		assertEquals(1, operationService.getQueue().size());
+
 		operationService.addOperation(new Operation(-1, 1, 550, "USD", "COMPANY"));
-		//
-		// assertEquals(2, operationService.operations.size());
+
+		assertEquals(2, operationService.getQueue().size());
 	}
 }

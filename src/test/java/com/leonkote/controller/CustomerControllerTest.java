@@ -3,6 +3,7 @@ package com.leonkote.controller;
 import com.leonkote.OperationHistoryApiApplicationTest;
 import com.leonkote.controller.dto.CustomerDTO;
 import com.leonkote.controller.dto.CustomersGetResponse;
+import com.leonkote.service.CustomerService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,13 +13,15 @@ public class CustomerControllerTest extends OperationHistoryApiApplicationTest
 {
 	@Autowired
 	private CustomerController customerController;
+	@Autowired
+	private CustomerService customerService;
 
 	@Test
 	public void getCustomerTest()
 	{
-		int count = customerController.getCustomers().getClients().size();
+		customerService.init();
 
-		assertEquals(count, customerController.getCustomers().getClients().size());
+		assertEquals(2, customerController.getCustomers().getClients().size());
 
 		CustomerDTO customer1 = customerController.getCustomer(0);
 		CustomerDTO customer2 = customerController.getCustomer(1);
@@ -28,15 +31,15 @@ public class CustomerControllerTest extends OperationHistoryApiApplicationTest
 		assertEquals(1, customer2.getId());
 		assertEquals("Boot", customer2.getName());
 
-		assertEquals(count, customerController.getCustomers().getClients().size());
+		assertEquals(2, customerController.getCustomers().getClients().size());
 	}
 
 	@Test
 	public void getCustomersTest()
 	{
-		int count = customerController.getCustomers().getClients().size();
+		customerService.init();
 
-		assertEquals(count, customerController.getCustomers().getClients().size());
+		assertEquals(2, customerController.getCustomers().getClients().size());
 
 		CustomersGetResponse customers = customerController.getCustomers();
 		CustomerDTO customer1 = customers.getClients().get(0);
@@ -47,38 +50,38 @@ public class CustomerControllerTest extends OperationHistoryApiApplicationTest
 		assertEquals(1, customer2.getId());
 		assertEquals("Boot", customer2.getName());
 
-		assertEquals(count, customerController.getCustomers().getClients().size());
+		assertEquals(2, customerController.getCustomers().getClients().size());
 	}
 
 	@Test
 	public void addCustomerTest()
 	{
-		int count = customerController.getCustomers().getClients().size();
+		customerService.init();
 
-		assertEquals(count, customerController.getCustomers().getClients().size());
+		assertEquals(2, customerController.getCustomers().getClients().size());
 
 		customerController.addCustomer(new CustomerDTO(-1, "newuser"));
 
-		assertEquals(count + 1, customerController.getCustomers().getClients().size());
+		assertEquals(3, customerController.getCustomers().getClients().size());
 
 		customerController.addCustomer(new CustomerDTO(-1, "omgnewuser"));
 
-		assertEquals(count + 2, customerController.getCustomers().getClients().size());
+		assertEquals(4, customerController.getCustomers().getClients().size());
 	}
 
 	@Test
 	public void deleteCustomerTest()
 	{
-		int count = customerController.getCustomers().getClients().size();
+		customerService.init();
 
-		assertEquals(count, customerController.getCustomers().getClients().size());
+		assertEquals(2, customerController.getCustomers().getClients().size());
 
 		customerController.deleteCustomer(0);
 
-		assertEquals(count - 1, customerController.getCustomers().getClients().size());
+		assertEquals(1, customerController.getCustomers().getClients().size());
 
 		customerController.deleteCustomer(1);
 
-		assertEquals(count - 2, customerController.getCustomers().getClients().size());
+		assertEquals(0, customerController.getCustomers().getClients().size());
 	}
 }

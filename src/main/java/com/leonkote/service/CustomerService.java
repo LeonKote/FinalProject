@@ -12,7 +12,7 @@ import java.util.Map;
 @Component
 public class CustomerService
 {
-	private final Map<Integer, Customer> storage = new HashMap<>();
+	private Map<Integer, Customer> storage;
 	private int nextId;
 
 	public void addCustomer(String name)
@@ -40,6 +40,9 @@ public class CustomerService
 	@PostConstruct
 	public void init()
 	{
+		storage = new HashMap<>();
+		nextId = 0;
+
 		addCustomer("Spring");
 		addCustomer("Boot");
 	}

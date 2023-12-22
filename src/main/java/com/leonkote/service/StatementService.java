@@ -12,8 +12,8 @@ import java.util.Map;
 @Component
 public class StatementService
 {
-	private final Map<Integer, Map<Integer, Operation>> storage = new HashMap<>();
-	private final Map<Integer, Integer> nextIds = new HashMap<>();
+	private Map<Integer, Map<Integer, Operation>> storage;
+	private Map<Integer, Integer> nextIds;
 
 	public void saveOperation(Operation operation)
 	{
@@ -59,6 +59,9 @@ public class StatementService
 	@PostConstruct
 	public void init()
 	{
+		storage = new HashMap<>();
+		nextIds = new HashMap<>();
+
 		saveOperation(new Operation(0, 0, 100, "RUB", "SAGA"));
 		saveOperation(new Operation(1, 0, 1000, "EUR", "LETA"));
 	}

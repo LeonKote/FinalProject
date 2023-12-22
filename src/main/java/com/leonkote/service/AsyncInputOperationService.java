@@ -13,7 +13,7 @@ import java.util.Queue;
 @RequiredArgsConstructor
 public class AsyncInputOperationService
 {
-	private final Queue<Operation> operations = new LinkedList<>();
+	private Queue<Operation> operations;
 
 	private final StatementService statementService;
 	private final OperationProperties operationProperties;
@@ -64,9 +64,20 @@ public class AsyncInputOperationService
 		statementService.saveOperation(operation);
 	}
 
-	@PostConstruct
+	public Queue<Operation> getQueue()
+	{
+		return operations;
+	}
+
 	public void init()
 	{
+		operations = new LinkedList<>();
+	}
+
+	@PostConstruct
+	public void initPost()
+	{
+		this.init();
 		this.startProcessing();
 	}
 }

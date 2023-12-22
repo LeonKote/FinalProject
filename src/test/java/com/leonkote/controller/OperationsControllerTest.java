@@ -4,6 +4,7 @@ import com.leonkote.OperationHistoryApiApplicationTest;
 import com.leonkote.controller.dto.OperationDTO;
 import com.leonkote.controller.dto.OperationsGetResponse;
 import com.leonkote.domain.Operation;
+import com.leonkote.service.AsyncInputOperationService;
 import com.leonkote.service.StatementService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +17,15 @@ public class OperationsControllerTest extends OperationHistoryApiApplicationTest
 	private OperationsController operationsController;
 	@Autowired
 	private StatementService statementService;
+	@Autowired
+	private AsyncInputOperationService operationService;
 
 	@Test
 	public void getOperationsTest()
 	{
-		int count = operationsController.getOperations(0).getOperations().size();
+		statementService.init();
 
-		assertEquals(count, operationsController.getOperations(0).getOperations().size());
+		assertEquals(2, operationsController.getOperations(0).getOperations().size());
 
 		OperationsGetResponse operations = operationsController.getOperations(0);
 		OperationDTO operation1 = operations.getOperations().get(0);
@@ -39,40 +42,39 @@ public class OperationsControllerTest extends OperationHistoryApiApplicationTest
 		assertEquals("EUR", operation2.getCurrency());
 		assertEquals("LETA", operation2.getMerchant());
 
-		assertEquals(count, operationsController.getOperations(0).getOperations().size());
+		assertEquals(2, operationsController.getOperations(0).getOperations().size());
 	}
 
 	@Test
 	public void addOperationTest()
 	{
-		// Private field, how to test?
-		//
-		// assertEquals(0, operationService.operations.size());
-		//
+		operationService.init();
+
+		assertEquals(0, operationService.getQueue().size());
+
 		operationsController.addOperation(0, new OperationDTO(-1, 0, 500, "USD", "LETHAL"));
-		//
-		// assertEquals(1, operationService.operations.size());
-		//
+
+		assertEquals(1, operationService.getQueue().size());
+
 		operationsController.addOperation(1, new OperationDTO(-1, 1, 550, "USD", "COMPANY"));
-		//
-		// assertEquals(2, operationService.operations.size());
+
+		assertEquals(2, operationService.getQueue().size());
 	}
 
 	@Test
 	public void deleteOperationTest()
 	{
+		statementService.init();
+
 		statementService.saveOperation(new Operation(-1, 1, 500, "EUR", "CHIKIBAMBONI"));
 
-		int count1 = operationsController.getOperations(0).getOperations().size();
-		int count2 = operationsController.getOperations(1).getOperations().size();
-
-		assertEquals(count1, operationsController.getOperations(0).getOperations().size());
-		assertEquals(count2, operationsController.getOperations(1).getOperations().size());
+		assertEquals(2, operationsController.getOperations(0).getOperations().size());
+		assertEquals(1, operationsController.getOperations(1).getOperations().size());
 
 		operationsController.deleteOperation(0, 1);
 		operationsController.deleteOperation(1, 0);
 
-		assertEquals(count1 - 1, operationsController.getOperations(0).getOperations().size());
-		assertEquals(count2 - 1, operationsController.getOperations(1).getOperations().size());
+		assertEquals(1, operationsController.getOperations(0).getOperations().size());
+		assertEquals(0, operationsController.getOperations(1).getOperations().size());
 	}
 }
